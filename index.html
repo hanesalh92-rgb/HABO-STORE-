@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>متجر HABO STORE</title>
+    <style>
+        body { background-color: #070b19; color: #ffffff; font-family: sans-serif; text-align: center; padding: 30px; margin: 0; }
+        .header { background: linear-gradient(135deg, #0052d4, #4364f7, #6fb1fc); padding: 20px; border-radius: 15px; margin-bottom: 40px; }
+        h1 { margin: 0; font-size: 36px; }
+        .search-box { padding: 12px; width: 60%; font-size: 16px; border-radius: 8px; border: none; margin-bottom: 30px; text-align: center; }
+        .container { display: flex; flex-wrap: wrap; justify-content: center; gap: 25px; }
+        .game-card { border: 1px solid #1e293b; padding: 20px; border-radius: 12px; background: #111827; width: 260px; }
+        button { background: #2563eb; color: white; border: none; padding: 12px 25px; cursor: pointer; border-radius: 8px; font-weight: bold; width: 100%; margin-top: 10px; }
+        button:hover { background: #1d4ed8; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>متجر هابو للألعاب | HABO STORE</h1>
+        <p>المكتبة الضخمة المستقلة لتحميل ألعاب PS4 مباشرة</p>
+    </div>
+
+    <!-- شريط بحث ذكي للتنقل بين الألعاب -->
+    <input type="text" id="search" class="search-box" placeholder="ابحث عن لعبتك المفضلة هنا..." onkeyup="filterGames()">
+
+    <div class="container" id="games-container">
+        <!-- الألعاب سيتم توليدها هنا تلقائياً -->
+    </div>
+
+    <script>
+        let allGames = [];
+        
+        // ⚠️ قم بتغيير hanesalh92-rgb إلى اسم حسابك الحقيقي في جيتهاب
+        const jsonUrl = "https://githubusercontent.com";
+
+        fetch(jsonUrl)
+        .then(res => res.json())
+        .then(data => {
+            allGames = data;
+            renderGames(allGames);
+        }).catch(err => console.error("خطأ في جلب ملف الألعاب"));
+
+        function renderGames(games) {
+            const container = document.getElementById("games-container");
+            container.innerHTML = "";
+            games.forEach(game => {
+                const card = document.createElement("div");
+                card.className = "game-card";
+                card.innerHTML = `
+                    <div class="game-title">${game.title || game.name}</div>
+                    <div class="game-size">الحجم: ${game.size || 'غير محدد'}</div>
+                    <button onclick="installGame('${game.url || game.download_url || game.pkg}')">تثبيت عبر HABO 📥</button>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function filterGames() {
+            const query = document.getElementById("search").value.toLowerCase();
+            const filtered = allGames.filter(g => (g.title || g.name).toLowerCase().includes(query));
+            renderGames(filtered);
+        }
+
+        function installGame(pkgUrl) {
+            const apiUrl = `http://127.0.0`;
+            fetch(apiUrl, { method: 'POST', body: JSON.stringify({ type: "direct", url: pkgUrl }) })
+            .then(res => alert("بدأ متجر HABO بالتحميل في خلفية البلايستيشن! تفقد التنبيهات في جهازك."))
+            .catch(err => alert("تأكد من تشغيل خيار Remote PKG Installer في الـ GoldHEN"));
+        }
+    </script>
+</body>
+</html>
+Use code with caution.
